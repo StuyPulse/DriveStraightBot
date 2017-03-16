@@ -8,9 +8,9 @@ import org.usfirst.frc.team694.util.Gamepad;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	Gamepad driverpad = new Gamepad(RobotMap.GAMEPAD_DRIVER_PORT);
+	public Gamepad driverPad = new Gamepad(RobotMap.GAMEPAD_DRIVER_PORT);
 
 	public OI() {
-		driverpad.getLeftButton().whenPressed(new PIDTestCommand());
+		driverPad.getLeftButton().whenPressed(new PIDTestCommand());
 	}
 }

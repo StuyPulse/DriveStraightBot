@@ -1,6 +1,7 @@
 package org.usfirst.frc.team694.robot.subsystems;
 
 import org.usfirst.frc.team694.robot.RobotMap;
+import org.usfirst.frc.team694.robot.commands.DrivetrainTankDriveCommand;
 
 import com.ctre.CANTalon;
 
@@ -129,7 +130,7 @@ public class Drivetrain extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new DrivetrainTankDriveCommand());
 	}
 
 	private class GyroInput implements PIDSource {
