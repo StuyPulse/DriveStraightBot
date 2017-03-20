@@ -2,6 +2,7 @@ package org.usfirst.frc.team694.robot.subsystems;
 
 import org.usfirst.frc.team694.robot.RobotMap;
 import org.usfirst.frc.team694.robot.commands.DrivetrainTankDriveCommand;
+import org.usfirst.frc.team694.util.StuyGyro;
 
 import com.ctre.CANTalon;
 
@@ -39,17 +40,17 @@ public class Drivetrain extends Subsystem {
 	private RobotDrive robotDrive;
 
 	// replace with AHRS if necessary
-	private Gyro gyro;
+	private StuyGyro gyro;
 	
 	// Movespeed for auto drive straight
 	private double autoMoveSpeed = 0.0;
 
 	public Drivetrain() {
-		//TODO: Init Gyro gyro = new Gyro();
-		pidOutput = new DrivetrainOutput(this);
+        gyro = new StuyGyro(RobotMap.DRIVETRAIN_GYRO_CHANNEL);
+        pidOutput = new DrivetrainOutput(this);
 		pidInput = new GyroInput(gyro);
 		controller = new PIDController(0.0,0.0,0.0, pidInput, pidOutput);
-
+		
 		//super(Kp, Ki, Kd);
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR_PORT);
 		rightFrontMotor = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR_PORT);
@@ -59,7 +60,7 @@ public class Drivetrain extends Subsystem {
 		robotDrive = new RobotDrive(leftBackMotor, leftFrontMotor, rightBackMotor, rightFrontMotor);
 	}
 
-	public void tankDrive(double rightSpeed, double leftSpeed) {
+	public void tankDrive(double leftSpeed, double rightSpeed) {
 		robotDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 
@@ -78,7 +79,7 @@ public class Drivetrain extends Subsystem {
 				);
 		autoMoveSpeed = speed;
 		if (!controller.isEnabled()) {
-			gyro.reset();
+			gyro.resetGyroMeasurements();
 			controller.reset();
 			controller.enable();
 		}
@@ -89,11 +90,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void gyroReset() {
-		gyro.reset();
+		gyro.resetGyroMeasurements();
 	}
 	
 	public double gyroAngle() {
-		return gyro.getAngle();
+		return gyro.getInstantaneousGyroAngleInDegrees();
 	}
 
 	public void resetEncoders() {
@@ -135,18 +136,18 @@ public class Drivetrain extends Subsystem {
 
 	private class GyroInput implements PIDSource {
 
-		private Gyro gyro;
-		
+		private StuyGyro gyro;
+
 		private PIDSourceType type;
 		
-		public GyroInput(Gyro gyro) {
+		public GyroInput(StuyGyro gyro) {
 			this.gyro = gyro;
 			type = PIDSourceType.kDisplacement;
 		}
 
 		@Override
 		public double pidGet() {
-			return gyro.getAngle();
+			return gyro.getInstantaneousGyroAngleInDegrees();
 		}
 
 		@Override
