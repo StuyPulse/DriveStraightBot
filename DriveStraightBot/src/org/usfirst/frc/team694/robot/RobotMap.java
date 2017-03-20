@@ -14,11 +14,14 @@ public interface RobotMap {
 
 	// Drivetrain Motor Ports
 	int LEFT_FRONT_MOTOR_PORT = 1;
-	int RIGHT_FRONT_MOTOR_PORT = 1;
-	int LEFT_BACK_MOTOR_PORT = 1;
-	int RIGHT_BACK_MOTOR_PORT = 1;
+	int RIGHT_FRONT_MOTOR_PORT = 3;
+	int LEFT_BACK_MOTOR_PORT = 2;
+	int RIGHT_BACK_MOTOR_PORT = 4;
 
 	// Gamepad Ports
 	int GAMEPAD_DRIVER_PORT = 0;
+	
+	// Gyro
+	int DRIVETRAIN_GYRO_CHANNEL = 
 
 }
