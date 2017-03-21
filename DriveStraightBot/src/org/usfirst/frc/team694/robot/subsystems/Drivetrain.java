@@ -6,13 +6,14 @@ import org.usfirst.frc.team694.util.StuyGyro;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -38,6 +39,10 @@ public class Drivetrain extends Subsystem {
 	private CANTalon leftBackMotor;
 	private CANTalon rightBackMotor;
 	private RobotDrive robotDrive;
+	
+    private Encoder leftEncoder;
+    private Encoder rightEncoder;
+
 
 	// replace with AHRS if necessary
 	private StuyGyro gyro;
@@ -50,18 +55,38 @@ public class Drivetrain extends Subsystem {
         pidOutput = new DrivetrainOutput(this);
 		pidInput = new GyroInput(gyro);
 		controller = new PIDController(0.0,0.0,0.0, pidInput, pidOutput);
-		
-		//super(Kp, Ki, Kd);
+
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR_PORT);
 		rightFrontMotor = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR_PORT);
 		leftBackMotor = new CANTalon(RobotMap.LEFT_BACK_MOTOR_PORT);
 		rightBackMotor = new CANTalon(RobotMap.RIGHT_BACK_MOTOR_PORT);
+		
+		// This shouldn't be needed but whatever
+		leftFrontMotor.enableBrakeMode(true);
+        rightFrontMotor.enableBrakeMode(true);
+        leftBackMotor.enableBrakeMode(true);
+        rightBackMotor.enableBrakeMode(true);
+
+        leftEncoder = new Encoder(RobotMap.DRIVETRAIN_ENCODER_LEFT_CHANNEL_A, RobotMap.DRIVETRAIN_ENCODER_LEFT_CHANNEL_B, true, EncodingType.k2X);
+        leftEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
+        rightEncoder = new Encoder(RobotMap.DRIVETRAIN_ENCODER_RIGHT_CHANNEL_A, RobotMap.DRIVETRAIN_ENCODER_RIGHT_CHANNEL_B, false, EncodingType.k2X);
+        rightEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
+
+
 		//Assume the team does not have encoders if they do not have a mobility auton command.
 		robotDrive = new RobotDrive(leftBackMotor, leftFrontMotor, rightBackMotor, rightFrontMotor);
+		
+		stop();
+		disablePID();
+		gyroReset();
 	}
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		robotDrive.tankDrive(leftSpeed, rightSpeed);
+	    SmartDashboard.putNumber("Gyro Angle", gyroAngle());
+	    SmartDashboard.putNumber("Left Encoder", leftEncoderDistance());
+        SmartDashboard.putNumber("Right Encoder", rightEncoderDistance());
+
+	    robotDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 
 	public void stop() {
@@ -84,12 +109,13 @@ public class Drivetrain extends Subsystem {
 			controller.enable();
 		}
 	}
-	
+
 	public void disablePID() {
 		controller.disable();
 	}
 
 	public void gyroReset() {
+		gyro.reset();
 		gyro.resetGyroMeasurements();
 	}
 	
@@ -98,24 +124,20 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void resetEncoders() {
-        leftFrontMotor.reset();
-        rightFrontMotor.reset();
-        leftFrontMotor.enable();
-        rightFrontMotor.enable();
-        leftFrontMotor.setPosition(0);
-        rightFrontMotor.setPosition(0);
+        leftEncoder.reset();
+        rightEncoder.reset();
+    }
+
+    public double getAbsEncoderDistance() {
+        return Math.max(Math.abs(leftEncoderDistance()), Math.abs(rightEncoderDistance()));
     }
 
     public double leftEncoderDistance() {
-        return (leftFrontMotor.getPosition() * RobotMap.DRIVETRAIN_ENCODERS_INCHES_PER_REVOLUTION)
-                / RobotMap.DRIVETRAIN_ENCODERS_FACTOR;
+        return leftEncoder.getDistance();
     }
 
     public double rightEncoderDistance() {
-        // Distance is scaled by -1.0 because right encoder was reporting
-        // incorrect (negated) values
-        return -1.0 * (rightFrontMotor.getPosition() * RobotMap.DRIVETRAIN_ENCODERS_INCHES_PER_REVOLUTION)
-                / RobotMap.DRIVETRAIN_ENCODERS_FACTOR;
+        return rightEncoder.getDistance();
     }
 
 	public double getEncoderDistance() {
