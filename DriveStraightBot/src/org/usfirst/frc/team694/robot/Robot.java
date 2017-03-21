@@ -32,13 +32,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		drivetrain = new Drivetrain();
+	    SmartDashboard.putData("Auto mode", chooser);
+
+	    SmartDashboard.putNumber("Drive Distance", 0.0);
+        SmartDashboard.putNumber("Drive Speed", 0.0);
+
+        SmartDashboard.putNumber("kP", 0.0);
+        SmartDashboard.putNumber("kI", 0.0);
+        SmartDashboard.putNumber("kD", 0.0);
+
+        drivetrain = new Drivetrain();
         oi = new OI();
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
-		SmartDashboard.putNumber("kP", 0.0);
-		SmartDashboard.putNumber("kI", 0.0);
-		SmartDashboard.putNumber("kD", 0.0);
+		// chooser.addObject("My Auto", new MyAutoCommand());	
 	}
 
 	/**

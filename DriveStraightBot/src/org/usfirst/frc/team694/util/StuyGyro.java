@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.StuyGyroLib;
 
 public class StuyGyro extends StuyGyroLib {
 

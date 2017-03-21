@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PIDTestCommand extends CommandGroup {
 
-	private final double DISTANCE = 24.0; // inches
-	private final double SPEED = 1.0;
+	//private final double DISTANCE = 1.0; // inches
+	//private final double SPEED = 0.1;
 
     public PIDTestCommand() {
-    	addSequential(new DriveStraightCommand(SPEED, DISTANCE));
-    	addSequential(new DriveStraightCommand(-SPEED, DISTANCE));
+    	addSequential(new DriveStraightPIDCommand());
+        //addSequential(new DriveStraightPIDCommand(SPEED, DISTANCE));
+    	//addSequential(new DriveStraightPIDCommand(-SPEED, DISTANCE));
     }
 }

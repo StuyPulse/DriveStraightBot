@@ -8,20 +8,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class DriveStraightCommand extends Command {
 
-    private double speed;
-    private double distance;
-    private boolean auto;
-    
-    public DriveStraightCommand(double speed, double distance) {
-        // Use requires() here to declare subsystem dependencies
-        this.speed = speed;
-        this.distance = distance;
+public class DriveStraightPIDCommand extends Command {
+
+	private double speed, distance;
+	private boolean auto;
+	
+    public DriveStraightPIDCommand(double speed, double distance) {
+    	this.speed = speed;
+    	this.distance = distance;
         requires(Robot.drivetrain);
     }
-
-    public DriveStraightCommand() {
+    
+    public DriveStraightPIDCommand() {
         this(0.0,0.0);
         auto = true;
     }
@@ -32,24 +31,31 @@ public class DriveStraightCommand extends Command {
             speed = SmartDashboard.getNumber("Drive Speed",0.0);
             distance = SmartDashboard.getNumber("Drive Distance",0.0);
         }
-        System.out.println("speed: " + speed + ", distance: " + distance);
-        Robot.drivetrain.resetEncoders();
+        
+        Robot.drivetrain.gyroReset();
+
+    	Robot.drivetrain.resetEncoders();
+    	Robot.drivetrain.startDrivingStraight(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.drivetrain.tankDrive(speed,speed);
-        //System.out.println("distance: " + Robot.drivetrain.getEncoderDistance());
+    	System.out.println("Encoders(L,R): (" 
+    			+ Robot.drivetrain.leftEncoderDistance() + "," 
+    			+ Robot.drivetrain.rightEncoderDistance() + "), gyro Angle: "
+    			+ Robot.drivetrain.gyroAngle());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Robot.drivetrain.getAbsEncoderDistance() > distance || distance <= 0.01 || speed <= 0.01);
+        return (Robot.drivetrain.getAbsEncoderDistance() > distance);
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.drivetrain.stop();
+        System.out.println("GYRO DISPLACEMENT: " + Robot.drivetrain.gyroAngle());
+    	Robot.drivetrain.stop();
+    	Robot.drivetrain.disablePID();
     }
 
     // Called when another command which requires one or more of the same
