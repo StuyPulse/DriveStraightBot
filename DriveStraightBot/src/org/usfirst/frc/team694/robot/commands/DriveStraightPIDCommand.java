@@ -31,7 +31,7 @@ public class DriveStraightPIDCommand extends Command {
             speed = SmartDashboard.getNumber("Drive Speed",0.0);
             distance = SmartDashboard.getNumber("Drive Distance",0.0);
         }
-        
+
         Robot.drivetrain.gyroReset();
 
     	Robot.drivetrain.resetEncoders();
@@ -40,6 +40,7 @@ public class DriveStraightPIDCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SmartDashboard.putNumber("Gyro Angle", Robot.drivetrain.gyroAngle());
     	System.out.println("Encoders(L,R): (" 
     			+ Robot.drivetrain.leftEncoderDistance() + "," 
     			+ Robot.drivetrain.rightEncoderDistance() + "), gyro Angle: "

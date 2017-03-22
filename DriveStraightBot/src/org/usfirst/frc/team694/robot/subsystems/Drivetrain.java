@@ -118,7 +118,7 @@ public class Drivetrain extends Subsystem {
 		gyro.reset();
 		gyro.resetGyroMeasurements();
 	}
-	
+
 	public double gyroAngle() {
 		return gyro.getInstantaneousGyroAngleInDegrees();
 	}
