@@ -34,12 +34,12 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 	    SmartDashboard.putData("Auto mode", chooser);
 
-	    SmartDashboard.putNumber("Drive Distance", 0.0);
-        SmartDashboard.putNumber("Drive Speed", 0.0);
+	    SmartDashboard.putNumber("Drive Distance", 100.0);
+        SmartDashboard.putNumber("Drive Speed", 1.0);
 
-        SmartDashboard.putNumber("kP", 0.0);
-        SmartDashboard.putNumber("kI", 0.0);
-        SmartDashboard.putNumber("kD", 0.0);
+        SmartDashboard.putNumber("kP", 0.15);
+        SmartDashboard.putNumber("kI", 0.015);
+        SmartDashboard.putNumber("kD", 0.6);
 
         drivetrain = new Drivetrain();
         oi = new OI();
