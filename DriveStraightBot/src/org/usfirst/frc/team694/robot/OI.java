@@ -1,6 +1,7 @@
 package org.usfirst.frc.team694.robot;
 
-import org.usfirst.frc.team694.robot.commands.PIDTestCommand;
+import org.usfirst.frc.team694.robot.commands.PIDDriveStraightTestCommand;
+import org.usfirst.frc.team694.robot.commands.PIDRotateTestCommand;
 import org.usfirst.frc.team694.util.Gamepad;
 
 /**
@@ -11,6 +12,8 @@ public class OI {
 	public Gamepad driverPad = new Gamepad(RobotMap.GAMEPAD_DRIVER_PORT);
 
 	public OI() {
-		driverPad.getLeftButton().whenPressed(new PIDTestCommand());
+		driverPad.getLeftButton().whenPressed(new PIDDriveStraightTestCommand());
+		driverPad.getRightButton().whenPressed(new PIDRotateTestCommand());
+
 	}
 }
