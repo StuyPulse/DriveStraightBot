@@ -8,10 +8,6 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,16 +19,6 @@ public class Drivetrain extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	/*
-	private static double Kp;
-	private static double Ki;
-	private static double Kd;
-	*/
-	
-	private PIDController controller;
-
-	private DrivetrainOutput pidOutput;
-	private GyroInput pidInput;
 
 	private CANTalon leftFrontMotor;
 	private CANTalon rightFrontMotor;
@@ -47,14 +33,10 @@ public class Drivetrain extends Subsystem {
 	// replace with AHRS if necessary
 	private StuyGyro gyro;
 	
-	// Movespeed for auto drive straight
-	private double autoMoveSpeed = 0.0;
 
 	public Drivetrain() {
         gyro = new StuyGyro(RobotMap.DRIVETRAIN_GYRO_CHANNEL);
-        pidOutput = new DrivetrainOutput(this);
-		pidInput = new GyroInput(gyro);
-		controller = new PIDController(0.0,0.0,0.0, pidInput, pidOutput);
+//		controller = new PIDController(0.0,0.0,0.0, pidInput, pidOutput);
 
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR_PORT);
 		rightFrontMotor = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR_PORT);
@@ -77,7 +59,6 @@ public class Drivetrain extends Subsystem {
 		robotDrive = new RobotDrive(leftBackMotor, leftFrontMotor, rightBackMotor, rightFrontMotor);
 		
 		stop();
-		disablePID();
 		gyroReset();
 	}
 
@@ -94,24 +75,6 @@ public class Drivetrain extends Subsystem {
 		leftBackMotor.set(0);
 		rightFrontMotor.set(0);
 		rightBackMotor.set(0);
-	}
-
-	public void startDrivingStraight(double speed) {
-		controller.setPID(
-				SmartDashboard.getNumber("kP", 0.0),
-				SmartDashboard.getNumber("kI", 0.0),
-				SmartDashboard.getNumber("kD", 0.0)
-				);
-		autoMoveSpeed = speed;
-		if (!controller.isEnabled()) {
-			gyro.resetGyroMeasurements();
-			controller.reset();
-			controller.enable();
-		}
-	}
-
-	public void disablePID() {
-		controller.disable();
 	}
 
 	public void gyroReset() {
@@ -144,57 +107,10 @@ public class Drivetrain extends Subsystem {
         return Math.max(leftEncoderDistance(), rightEncoderDistance());	
 	}
 
-	protected void usePIDOutput(double output) {
-		// these two (tankDrive and arcadeDrive for PID) 
-		// are NOT compatible with each other, but as far as we know they are both viable
-		robotDrive.tankDrive(autoMoveSpeed + output, autoMoveSpeed - output);
-		//robotDrive.arcadeDrive(autoMoveSpeed, -output);
-	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		setDefaultCommand(new DrivetrainTankDriveCommand());
 	}
 
-	private class GyroInput implements PIDSource {
-
-		private StuyGyro gyro;
-
-		private PIDSourceType type;
-		
-		public GyroInput(StuyGyro gyro) {
-			this.gyro = gyro;
-			type = PIDSourceType.kDisplacement;
-		}
-
-		@Override
-		public double pidGet() {
-			return gyro.getInstantaneousGyroAngleInDegrees();
-		}
-
-		@Override
-		public void setPIDSourceType(PIDSourceType type) {
-			this.type = type;
-		}
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return type;
-		}		
-	}
-
-	private class DrivetrainOutput implements PIDOutput {
-
-		private Drivetrain drivetrain;
-		
-		public DrivetrainOutput(Drivetrain drivetrain) {
-			this.drivetrain = drivetrain;
-		}
-
-		@Override
-		public void pidWrite(double output) {
-			drivetrain.usePIDOutput(output);	
-		}
-
-	}
 }

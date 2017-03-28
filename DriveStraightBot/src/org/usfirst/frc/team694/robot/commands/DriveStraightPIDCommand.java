@@ -2,24 +2,26 @@ package org.usfirst.frc.team694.robot.commands;
 
 import org.usfirst.frc.team694.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 
-public class DriveStraightPIDCommand extends Command {
+public class DriveStraightPIDCommand extends PIDCommand {
 
 	private double speed, distance;
 	private boolean auto;
-	
+
     public DriveStraightPIDCommand(double speed, double distance) {
-    	this.speed = speed;
+    	super(0.0,0.0,0.0);
+		this.speed = speed;
     	this.distance = distance;
         requires(Robot.drivetrain);
     }
-    
+
     public DriveStraightPIDCommand() {
         this(0.0,0.0);
         auto = true;
@@ -32,10 +34,18 @@ public class DriveStraightPIDCommand extends Command {
             distance = SmartDashboard.getNumber("Drive Distance",0.0);
         }
 
-        Robot.drivetrain.gyroReset();
+        PIDController controller = getPIDController();
+		controller.setPID(
+				SmartDashboard.getNumber("kP", 0.0),
+				SmartDashboard.getNumber("kI", 0.0),
+				SmartDashboard.getNumber("kD", 0.0)
+				);
+		controller.reset();
+		if (!controller.isEnabled())
+			controller.enable();
 
     	Robot.drivetrain.resetEncoders();
-    	Robot.drivetrain.startDrivingStraight(speed);
+		Robot.drivetrain.gyroReset();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -56,11 +66,23 @@ public class DriveStraightPIDCommand extends Command {
     protected void end() {
         System.out.println("GYRO DISPLACEMENT: " + Robot.drivetrain.gyroAngle());
     	Robot.drivetrain.stop();
-    	Robot.drivetrain.disablePID();
+    	getPIDController().disable();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+
+
+	@Override
+	protected double returnPIDInput() {
+		return Robot.drivetrain.gyroAngle();
+	}
+
+	@Override
+	protected void usePIDOutput(double output) {
+		Robot.drivetrain.tankDrive(speed + output, speed - output);
+	}
+
 }

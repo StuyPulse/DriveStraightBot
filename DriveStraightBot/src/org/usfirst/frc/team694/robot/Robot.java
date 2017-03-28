@@ -34,6 +34,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 	    SmartDashboard.putData("Auto mode", chooser);
 
+	    SmartDashboard.putNumber("Rotate Angle", 0.0);
+
 	    SmartDashboard.putNumber("Drive Distance", 100.0);
         SmartDashboard.putNumber("Drive Speed", 1.0);
 
