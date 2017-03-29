@@ -2,6 +2,7 @@ package org.usfirst.frc.team694.robot;
 
 import org.usfirst.frc.team694.robot.commands.PIDDriveStraightTestCommand;
 import org.usfirst.frc.team694.robot.commands.PIDRotateTestCommand;
+import org.usfirst.frc.team694.robot.commands.UselessFPSCounterCommand;
 import org.usfirst.frc.team694.util.Gamepad;
 
 /**
@@ -14,6 +15,6 @@ public class OI {
 	public OI() {
 		driverPad.getLeftButton().whenPressed(new PIDDriveStraightTestCommand());
 		driverPad.getRightButton().whenPressed(new PIDRotateTestCommand());
-
+		driverPad.getTopButton().whenPressed(new UselessFPSCounterCommand(60));
 	}
 }

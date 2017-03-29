@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static OI oi;
-	
+
 	public static Drivetrain drivetrain;
 
 	Command autonomousCommand;
@@ -38,14 +38,15 @@ public class Robot extends IterativeRobot {
 
 	    SmartDashboard.putNumber("Drive Distance", 100.0);
         SmartDashboard.putNumber("Drive Speed", 1.0);
+        SmartDashboard.putNumber("time within threshold", 60);
 
-        SmartDashboard.putNumber("kP", 0.15);
-        SmartDashboard.putNumber("kI", 0.015);
-        SmartDashboard.putNumber("kD", 0.6);
+        SmartDashboard.putNumber("kP", 0.1);
+        SmartDashboard.putNumber("kI", 0.1);
+        SmartDashboard.putNumber("kD", 0.8);
 
         drivetrain = new Drivetrain();
         oi = new OI();
-		// chooser.addObject("My Auto", new MyAutoCommand());	
+		// chooser.addObject("My Auto", new MyAutoCommand());
 	}
 
 	/**

@@ -10,9 +10,9 @@ public class RotatePIDCommand extends PIDCommand {
 
 	private double angle;
 	private boolean auto;
-	
+
 	private static final double ANGLE_THRESHOLD = 2;
-	private static final int TIME_WITHIN_THRESHOLD = 10;
+	private static final int TIME_WITHIN_THRESHOLD = 100;
 
 	private int timeWithinCounter;
 
@@ -50,6 +50,7 @@ public class RotatePIDCommand extends PIDCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SmartDashboard.putNumber("angle offset", angle - Robot.drivetrain.gyroAngle());
         // Threshold
     	if (Math.abs(Robot.drivetrain.gyroAngle() - angle) < ANGLE_THRESHOLD) {
     		timeWithinCounter++;
@@ -63,7 +64,7 @@ public class RotatePIDCommand extends PIDCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (timeWithinCounter > TIME_WITHIN_THRESHOLD);
+        return (timeWithinCounter > SmartDashboard.getNumber("time within threshold", 100));
     }
 
     // Called once after isFinished returns true
@@ -87,7 +88,7 @@ public class RotatePIDCommand extends PIDCommand {
 	@Override
 	protected void usePIDOutput(double output) {
 		// only rotate
-		Robot.drivetrain.tankDrive(output, -output);
+		Robot.drivetrain.tankDrive(-output, output);
 	}
 
 }
