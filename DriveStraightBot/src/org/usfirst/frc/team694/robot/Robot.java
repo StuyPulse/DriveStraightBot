@@ -2,6 +2,7 @@
 package org.usfirst.frc.team694.robot;
 
 import org.usfirst.frc.team694.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team694.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,6 +23,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	public static Drivetrain drivetrain;
+	public static Shooter shooter;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -40,11 +42,21 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Drive Speed", 1.0);
         SmartDashboard.putNumber("time within threshold", 60);
 
+        SmartDashboard.putNumber("Shooter Target Speed", 0.5);
+        
+        SmartDashboard.putBoolean("Use Shooter Voltage/RPM", true);
+
+
         SmartDashboard.putNumber("kP", 0.1);
         SmartDashboard.putNumber("kI", 0.1);
         SmartDashboard.putNumber("kD", 0.8);
 
+        SmartDashboard.putNumber("Shooter P", 0.1);
+        SmartDashboard.putNumber("Shooter I", 0.1);
+        SmartDashboard.putNumber("Shooter D", 0.8);
+
         drivetrain = new Drivetrain();
+        shooter = new Shooter();
         oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 	}

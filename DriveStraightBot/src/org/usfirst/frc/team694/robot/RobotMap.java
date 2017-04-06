@@ -13,10 +13,10 @@ public interface RobotMap {
 	double DRIVETRAIN_ENCODERS_FACTOR = -1;
 
 	// Drivetrain Motor Ports
-	int LEFT_FRONT_MOTOR_PORT = 1;
-	int RIGHT_FRONT_MOTOR_PORT = 3;
-	int LEFT_BACK_MOTOR_PORT = 2;
-	int RIGHT_BACK_MOTOR_PORT = 4;
+	int LEFT_FRONT_MOTOR_PORT = 4;
+	int RIGHT_FRONT_MOTOR_PORT = 1;
+	int LEFT_BACK_MOTOR_PORT = 3;
+	int RIGHT_BACK_MOTOR_PORT = 2;
 
 	// Drivetrain Encoder Ports
     int DRIVETRAIN_ENCODER_LEFT_CHANNEL_A = 2;
@@ -24,7 +24,13 @@ public interface RobotMap {
     int DRIVETRAIN_ENCODER_RIGHT_CHANNEL_A = 0;
     int DRIVETRAIN_ENCODER_RIGHT_CHANNEL_B = 1;
 
-	
+    // Other Motor Ports
+    int SHOOTER_MOTOR_CHANNEL = 7;
+    
+    // Digital IO Ports
+    int SHOOTER_ENCODER_A_CHANNEL = 4;
+    int SHOOTER_ENCODER_B_CHANNEL = 5;
+    
 	// Gamepad Ports
 	int GAMEPAD_DRIVER_PORT = 0;
 	

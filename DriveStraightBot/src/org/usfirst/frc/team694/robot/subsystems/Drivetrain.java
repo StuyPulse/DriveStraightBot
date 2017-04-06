@@ -49,6 +49,12 @@ public class Drivetrain extends Subsystem {
         leftBackMotor.enableBrakeMode(true);
         rightBackMotor.enableBrakeMode(true);
 
+        leftFrontMotor.setInverted(true);
+        rightFrontMotor.setInverted(true);
+        leftBackMotor.setInverted(true);
+        rightBackMotor.setInverted(true);
+
+
         leftEncoder = new Encoder(RobotMap.DRIVETRAIN_ENCODER_LEFT_CHANNEL_A, RobotMap.DRIVETRAIN_ENCODER_LEFT_CHANNEL_B, true, EncodingType.k2X);
         leftEncoder.setDistancePerPulse(RobotMap.DRIVETRAIN_ENCODER_INCHES_PER_PULSE);
         rightEncoder = new Encoder(RobotMap.DRIVETRAIN_ENCODER_RIGHT_CHANNEL_A, RobotMap.DRIVETRAIN_ENCODER_RIGHT_CHANNEL_B, false, EncodingType.k2X);

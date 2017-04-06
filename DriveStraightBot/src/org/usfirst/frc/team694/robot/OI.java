@@ -1,8 +1,8 @@
 package org.usfirst.frc.team694.robot;
 
-import org.usfirst.frc.team694.robot.commands.PIDDriveStraightTestCommand;
-import org.usfirst.frc.team694.robot.commands.PIDRotateTestCommand;
-import org.usfirst.frc.team694.robot.commands.UselessFPSCounterCommand;
+import org.usfirst.frc.team694.robot.commands.ShootConsistentlyPIDCommand;
+import org.usfirst.frc.team694.robot.commands.ShooterRegularStartCommand;
+import org.usfirst.frc.team694.robot.commands.ShooterRegularStopCommand;
 import org.usfirst.frc.team694.util.Gamepad;
 
 /**
@@ -13,8 +13,13 @@ public class OI {
 	public Gamepad driverPad = new Gamepad(RobotMap.GAMEPAD_DRIVER_PORT);
 
 	public OI() {
-		driverPad.getLeftButton().whenPressed(new PIDDriveStraightTestCommand());
-		driverPad.getRightButton().whenPressed(new PIDRotateTestCommand());
-		driverPad.getTopButton().whenPressed(new UselessFPSCounterCommand(60));
+		// TODO: Uncomment on
+		//driverPad.getLeftButton().whenPressed(new PIDDriveStraightTestCommand());
+		//driverPad.getRightButton().whenPressed(new PIDRotateTestCommand());
+		//driverPad.getTopButton().whenPressed(new UselessFPSCounterCommand(60));
+
+		driverPad.getRightButton().whenPressed(new ShootConsistentlyPIDCommand());
+		driverPad.getDPadRight().whenPressed(new ShooterRegularStartCommand(0.5));
+		//driverPad.getDPadDown().whenPressed(new ShooterRegularStopCommand());
 	}
 }
