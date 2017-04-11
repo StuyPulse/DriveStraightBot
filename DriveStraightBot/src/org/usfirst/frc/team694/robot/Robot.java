@@ -54,6 +54,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Shooter P", 0.1);
         SmartDashboard.putNumber("Shooter I", 0.1);
         SmartDashboard.putNumber("Shooter D", 0.8);
+        SmartDashboard.putNumber("Shooter F", 0.8);
 
         drivetrain = new Drivetrain();
         shooter = new Shooter();

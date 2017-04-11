@@ -104,6 +104,11 @@ public class Shooter extends Subsystem {
         }
     }
 */
+    public void setPIDF(double p, double i, double d, double f) {
+    	shooterMotor.setPID(p, i, d);
+    	shooterMotor.setF(f);
+    }
+
     public void setShooterBrakeMode(boolean on) {
         shooterMotor.enableBrakeMode(on);
     }
