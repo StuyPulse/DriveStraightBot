@@ -70,15 +70,17 @@ public class ShootConsistentlyPIDCommand extends PIDCommand {
 	@Override
 	protected double returnPIDInput() {
 		// TODO Auto-generated method stub
-		return (Robot.shooter.getCurrentMotorSpeedInRPM() - speed);
+		//return (Robot.shooter.getCurrentMotorSpeedInRPM() - speed);
+		return Robot.shooter.getCurrentMotorSpeedInRPM();
 	}
 
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (SmartDashboard.getBoolean("Use Shooter Voltage/RPM", false)) 
-			Robot.shooter.setSpeed(output);
-		else
-			Robot.shooter.setRPM(output);		
+		//if (SmartDashboard.getBoolean("Use Shooter Voltage/RPM", false)) {
+			Robot.shooter.setSpeed(speed + output);
+		//} else {
+		//	Robot.shooter.setRPM(output);
+		//}
 	}
 }

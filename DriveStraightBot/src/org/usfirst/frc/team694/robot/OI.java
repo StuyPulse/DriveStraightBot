@@ -1,6 +1,8 @@
 package org.usfirst.frc.team694.robot;
 
+import org.usfirst.frc.team694.robot.commands.HopperRunCommand;
 import org.usfirst.frc.team694.robot.commands.ShootConsistentlyPIDCommand;
+import org.usfirst.frc.team694.robot.commands.ShootConsistentlyPIDFCommand;
 import org.usfirst.frc.team694.robot.commands.ShooterRegularStartCommand;
 import org.usfirst.frc.team694.robot.commands.ShooterRegularStopCommand;
 import org.usfirst.frc.team694.util.Gamepad;
@@ -18,8 +20,13 @@ public class OI {
 		//driverPad.getRightButton().whenPressed(new PIDRotateTestCommand());
 		//driverPad.getTopButton().whenPressed(new UselessFPSCounterCommand(60));
 
-		driverPad.getRightButton().whenPressed(new ShootConsistentlyPIDCommand());
+		driverPad.getRightButton().whenPressed(new ShootConsistentlyPIDFCommand());
+		driverPad.getBottomButton().whenPressed(new ShootConsistentlyPIDCommand());
 		driverPad.getDPadRight().whenPressed(new ShooterRegularStartCommand(0.5));
-		//driverPad.getDPadDown().whenPressed(new ShooterRegularStopCommand());
+		driverPad.getDPadDown().whenPressed(new ShooterRegularStopCommand());
+		
+        driverPad.getLeftTrigger().whileHeld(new HopperRunCommand(true));
+        driverPad.getLeftBumper().whileHeld(new HopperRunCommand(false));
+
 	}
 }

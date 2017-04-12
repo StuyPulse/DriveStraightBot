@@ -35,21 +35,20 @@ public class ShootConsistentlyPIDFCommand extends Command {
 				SmartDashboard.getNumber("Shooter F", 0.0)
         		);
 
-    	Robot.shooter.setSpeed(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.shooter.setRPM(speed);
     	// Display/Testing
-    	double currentSpeed = Robot.shooter.getCurrentMotorSpeedInRPM();
-    	SmartDashboard.putNumber("Shooter Speed Offset", currentSpeed - speed);
-    	SmartDashboard.putNumber("Shooter Speed", currentSpeed);
+//    	double currentSpeed = Robot.shooter.getCurrentMotorSpeedInRPM();
+    	//SmartDashboard.putNumber("Shooter Speed Offset", currentSpeed); // so far none...
+    	//SmartDashboard.putNumber("Shooter Speed", currentSpeed);
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    // Must be overidden!
     protected boolean isFinished() {
-    	// Stop when pressed DPad
-        return Robot.oi.driverPad.getDPadDown().get();
+        return false;
     }
 
     // Called once after isFinished returns true

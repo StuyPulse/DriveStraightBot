@@ -26,6 +26,7 @@ public interface RobotMap {
 
     // Other Motor Ports
     int SHOOTER_MOTOR_CHANNEL = 7;
+    int HOPPER_MOTOR_CHANNEL = 5;
     
     // Digital IO Ports
     int SHOOTER_ENCODER_A_CHANNEL = 4;
@@ -36,8 +37,14 @@ public interface RobotMap {
 	
 	// Gyro
 	int DRIVETRAIN_GYRO_CHANNEL = 0;
+
+	// Analog ports
+    int HOPPER_SENSOR_CHANNEL = 3;
 	
-	
+    // Hopper Constants
+    double HOPPER_SENSOR_THRESHOLD = 1.25;
+
+    
 	// Physical Constants
     double DRIVETRAIN_WHEEL_CIRCUMFERENCE = 6 * Math.PI;
     double PULSES_PER_REVOLUTION = 250;
