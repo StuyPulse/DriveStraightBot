@@ -3,6 +3,7 @@ package org.usfirst.frc.team694.robot.subsystems;
 import org.usfirst.frc.team694.robot.RobotMap;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,6 +24,12 @@ public class Shooter extends Subsystem {
     public Shooter() {
         shooterMotor = new CANTalon(RobotMap.SHOOTER_MOTOR_CHANNEL);
         currentSpeed = 1.0;
+        shooterMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+        shooterMotor.changeControlMode(TalonControlMode.Speed);
+        //shooterMotor.setNominalClosedLoopVoltage(12.0);
+        shooterMotor.configEncoderCodesPerRev(256);
+        shooterMotor.reverseSensor(true);
+        shooterMotor.enableBrakeMode(false);
         /*
          * shooterMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative
          * ); shooterMotor.reverseSensor(false);
@@ -36,21 +43,20 @@ public class Shooter extends Subsystem {
     }
 
     public void setSpeed(double speed) {
-        shooterMotor.changeControlMode(TalonControlMode.PercentVbus);
+    	if (shooterMotor.getControlMode() != TalonControlMode.PercentVbus) {
+    		shooterMotor.changeControlMode(TalonControlMode.PercentVbus);
+    	}
         shooterMotor.set(speed);
         currentSpeed = speed;
     }
 
     public void setRPM(double rpm) {
-    	shooterMotor.changeControlMode(TalonControlMode.Speed);
+    	if (shooterMotor.getControlMode() != TalonControlMode.Speed) {
+    		shooterMotor.changeControlMode(TalonControlMode.Speed);
+    	}
     	shooterMotor.set(rpm);
     }
 
-    /*
-     * public void setRPM(double rpm) {
-     * shooterMotor.changeControlMode(TalonControlMode.Speed);
-     * shooterMotor.set(rpm); }
-     */
 
     public void stop() {
         setSpeed(0.0);
@@ -62,7 +68,7 @@ public class Shooter extends Subsystem {
     public double getCurrentMotorSpeedInRPM() {
         // TODO: In testing, the shooter motor speed was inverted, but in the actual
     	//       destiny code it isn't. Deal with this.
-    	return -1 * shooterMotor.getSpeed();
+    	return -1 * shooterMotor.getEncVelocity();
     }
 
     // Use the encoders to verify the speed

@@ -2,6 +2,7 @@
 package org.usfirst.frc.team694.robot;
 
 import org.usfirst.frc.team694.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team694.robot.subsystems.Hopper;
 import org.usfirst.frc.team694.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 
 	public static Drivetrain drivetrain;
 	public static Shooter shooter;
+	public static Hopper hopper;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -42,8 +44,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Drive Speed", 1.0);
         SmartDashboard.putNumber("time within threshold", 60);
 
-        SmartDashboard.putNumber("Shooter Target Speed", 0.5);
-        
+        SmartDashboard.putNumber("Shooter Target Speed", 3000);
+
         SmartDashboard.putBoolean("Use Shooter Voltage/RPM", true);
 
 
@@ -51,13 +53,14 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("kI", 0.1);
         SmartDashboard.putNumber("kD", 0.8);
 
-        SmartDashboard.putNumber("Shooter P", 0.1);
-        SmartDashboard.putNumber("Shooter I", 0.1);
-        SmartDashboard.putNumber("Shooter D", 0.8);
-        SmartDashboard.putNumber("Shooter F", 0.8);
+        SmartDashboard.putNumber("Shooter P", 0);
+        SmartDashboard.putNumber("Shooter I", 0);
+        SmartDashboard.putNumber("Shooter D", 0);
+        SmartDashboard.putNumber("Shooter F", 0);
 
         drivetrain = new Drivetrain();
         shooter = new Shooter();
+        hopper = new Hopper();
         oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 	}
@@ -128,6 +131,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Shooter Speed Offset", Robot.shooter.getCurrentMotorSpeedInRPM());
+		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getCurrentMotorSpeedInRPM());
+		System.out.println(Robot.shooter.getCurrentMotorSpeedInRPM());
 	}
 
 	/**
